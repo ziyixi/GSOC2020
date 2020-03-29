@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+    \PYG{n+nx}{Slider} \PYG{p}{\PYGZob{}}
+        \PYG{k}{value:} \PYG{n+nx}{slider\PYGZus{}status}
+      \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+    \PYG{n}{qml\PYGZus{}data} \PYG{o}{=} \PYG{n}{QByteArray}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{i}\PYG{l+s}{m}\PYG{l+s}{p}\PYG{l+s}{o}\PYG{l+s}{r}\PYG{l+s}{t}\PYG{l+s}{ }\PYG{l+s}{.}\PYG{l+s}{.}\PYG{l+s}{.}
+
+\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{A}\PYG{l+s}{p}\PYG{l+s}{p}\PYG{l+s}{l}\PYG{l+s}{i}\PYG{l+s}{c}\PYG{l+s}{a}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{o}\PYG{l+s}{n}\PYG{l+s}{W}\PYG{l+s}{i}\PYG{l+s}{n}\PYG{l+s}{d}\PYG{l+s}{o}\PYG{l+s}{w}\PYG{l+s}{ }\PYG{l+s}{\PYGZob{}}
+\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{.}\PYG{l+s}{.}\PYG{l+s}{.}
+\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{\PYGZcb{}}
+\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{ }\PYG{l+s}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{n}{qengine} \PYG{o}{=} \PYG{n}{init\PYGZus{}qmlengine}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{qcomp} \PYG{o}{=} \PYG{n}{QQmlComponent}\PYG{p}{(}\PYG{n}{qengine}\PYG{p}{)}
+    \PYG{n}{set\PYGZus{}data}\PYG{p}{(}\PYG{n}{qcomp}\PYG{p}{,} \PYG{n}{qml\PYGZus{}data}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{create}\PYG{p}{(}\PYG{n}{qcomp}\PYG{p}{,} \PYG{n}{qmlcontext}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+
+    \PYG{c}{\PYGZsh{} Run the application}
+    \PYG{n}{exec}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}

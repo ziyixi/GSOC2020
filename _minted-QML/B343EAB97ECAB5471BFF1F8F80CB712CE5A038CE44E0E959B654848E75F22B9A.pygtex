@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{using} \PYG{n}{Observables}
+\PYG{n}{slider\PYGZus{}status}\PYG{o}{=}\PYG{n}{Observable}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+\PYG{n}{on}\PYG{p}{(}\PYG{n}{slider\PYGZus{}status}\PYG{p}{)} \PYG{k}{do} \PYG{n}{x}
+  \PYG{n}{do\PYGZus{}things\PYGZus{}when\PYGZus{}slider\PYGZus{}status\PYGZus{}changes}\PYG{p}{(}\PYG{p}{)}
+\PYG{k}{end}
+\end{Verbatim}

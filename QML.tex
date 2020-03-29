@@ -1,0 +1,192 @@
+\documentclass[12pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cite}
+\usepackage{minted}
+\usepackage{hyperref}
+
+\title{GUI library integration (QML.jl)}
+\author{Ziyi Xi}
+\date{March 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+QML.jl is a library to integrate Qt especially QML with the Julia programing language. By combining the widely used QML and the efficient Julia language, it 
+could not only provide an alternative way for programming with QML, but also be more efficient comparing with using other programming languages. However, there could still be 
+some improvements for this package such as reducing the programming difficulty by making the package more "Julian" or make the GUI more "Reactive" by writing the pure
+Julia code. In this proposal, I will talk about the ideas about doing that.
+
+\section{Ways to improve the current QML.jl}
+
+At the moment, QML.jl provides a way to read in QML, and use Julia as the backend. The use of QML 
+provides what the interface looks like and some simple logic. The use of Julia mainly controls the signals and some more complicated
+logic. It has provided some awesome features like calling Julia functions from QML, read and set context properties from Julia and QML,
+emit signals from Julia to QML and use data models. These features have provided the needed components for the communication between QML 
+and the pure Julia.
+
+However, writing reactive GUI seems to be tedious by using the current package. For example, if we want to bind the text
+for the input box with the value of a slider, at the moment we have to do:
+
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{qml}
+    import QtQuick 2.0
+    import QtQuick.Controls 1.0
+    import QtQuick.Layouts 1.0
+    
+    ApplicationWindow {
+      id: root
+    
+      ColumnLayout {    
+        Slider {
+          value: input
+          onValueChanged: {
+            input = value;
+            output = 2*input;
+          }
+        }
+    
+        TextInput {
+          text: output
+          onTextEdited: {
+            output = text;
+            input = parseInt(text)/2;
+          }
+        }
+      }
+    
+    }
+\end{minted}
+
+This is a simplified QML script to bind the values input and output. Note here if we want to bind the value with the slider and the text from the 
+text input box, we will have to write two signal functions separately. It may seem to be easy to handle the example case. But image if we have lots of sliders and lots 
+of text input boxes, should we still write so many signal functions?  There 
+must be a way to simplify this work, and the idea of QmlReactive is on the way!
+
+Instead of writing QML script like this, we can do something similar to GtkReactive.jl, like this:
+
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{julia}
+Using QMLReactive
+win = Window("Testing") |> (bx = Box(:v));  # a window containing a vertical Box for layout
+reactive_signal=signal()
+sl = slider(1:100,signal=reactive_value)
+tb = textbox(Int; signal=reactive_value/2)
+push!(bx, sl); 
+push!(bx, tb);
+showall() 
+\end{minted}
+
+That's it! Same functions, less code, easier to write, although it has not be implemented yet.
+
+So how to implement it? 
+
+Luckily there is a very good feature in QML.jl: QQmlComponent. Using QQmlComponent, the QML code can be set from a Julia string wrapped 
+in QByteArray, as noted in the documentation in QML.jl:
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{julia}
+    qml_data = QByteArray("""
+    import ...
+    
+    ApplicationWindow {
+      ...
+    }
+    """)
+    
+    qengine = init_qmlengine()
+    qcomp = QQmlComponent(qengine)
+    set_data(qcomp, qml_data, "")
+    create(qcomp, qmlcontext());
+    
+    # Run the application
+    exec()
+\end{minted}
+
+Firstly we can set an empty global QByteArray to store our generated QML script. And when we call functions like 
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{julia}
+sl = slider(1:100,signal=reactive_value)
+\end{minted}
+
+We can insert the string:
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{qml}
+    Slider {
+        value: slider_status
+      }    
+\end{minted}
+
+And in Julia, thanks to Observables.jl, we can write the code as:
+\begin{minted}[breaklines,escapeinside=||,mathescape=true, linenos, numbersep=3pt, gobble=2, frame=lines, fontsize=\small, framesep=2mm]{julia}
+using Observables
+slider_status=Observable(0)
+on(slider_status) do x
+  do_things_when_slider_status_changes()
+end
+\end{minted}
+
+By using Observables.jl, the bi-direction communication is enabled. The communication flow will not just from the Julia to QML, but also from QML to Julia
+without writing the callback functions. So when the "slider\_status" is changed in the slider, assuming we have passed the same value to the text input box, 
+the value there should also be changed.
+
+Isn't it fantastic?
+
+\section{Goals and Milestones}
+
+To develop the QmlReactive package, I'd like to implement APIs described in GtkReactive.jl. 
+It includes the input widgets:
+\begin{itemize}
+    \item button
+    \item checkbox
+    \item togglebutton
+    \item slider
+    \item textbox
+    \item textarea
+    \item dropdown
+    \item player
+\end{itemize}
+
+The output widgets:
+\begin{itemize}
+    \item label
+\end{itemize}
+
+And also we can provide some reactive object from Observable.jl like MouseButton. It can be an enumerated object containing 
+several Observable objects, with a set of functions on it. We can also provide something like
+mouseButton.x to the value of a slider.
+
+\section{What benefits can users and community members get from this package?}
+
+I want to help develop a package for users and community members to do the GUI programming in pure Julia. We don't have to call 
+python's Pyqt5 to write the GUI anymore. It can also help people to show their results with their own GUI, as Julia is widely used
+in the science.
+
+As for the milestones, if I am admitted into the program, I will have three months to work on the project. And my plan will be:
+\begin{itemize}
+    \item{develop QmlReactive.jl} It will take one or two weeks to write the prototype and several weeks to finish the testing part. 
+    \item{develop more widgets for QML.jl} It will take several weeks to enrich QML.jl by supporting more widgets! (like integration with Plots.jl and DataFrames.jl)
+\end{itemize}
+
+\section{Others I can contribute to QML.jl}
+
+Apart from the questions described above, it will also be interesting to combine Plots.jl and DataFrames.jl with QML. It will be 
+straightforward to bind the data in DataFrames.jl with the chart in QML. And it will be nice if we show figures from Plots.jl in 
+QML.
+
+The difficult part here is that how to show the Plots.jl's figure in QML, without losing the interactive ability 
+in Plots.jl. It should be easiest to support plotly since QML supports javascript. Using Pyplot seems to be more 
+difficult but referring to the pyqt5 backend for matplotlib might be a way to go.
+
+\section{About me}
+
+Currently I am a second year Ph.D student in the department of computational mathematics, science and engineering from Michigan State University.
+And I get my bachelor degree in geophysics and dual degree in computer science from the University of Science and Technology of China.
+
+I have some experience in programming Julia, Python, C++, Fortran, CUDA and Javascript. And since I am in a computational science major, I also have some 
+background in numerical computing, that's the reason why I am so fond of Julia.
+
+For my previous programming experience, I have widely used Julia in my research, such as the repo in \url{https://github.com/ziyixi/seisflow/tree/master/seisflow/julia/specfem_gll.jl/src/program} .
+There are also some interesting packages like \url{https://github.com/ziyixi/seisflow}, which is a package I develop for my research. Besides that, I have also worked on some
+interesting projects like \url{https://github.com/ziyixi/wechat_mpvue}, which I use Vue.js to develop a we-chat mini program.
+
+It will be welcome for anyone to contact me. My email address is xiziyi@msu.edu and my github username is ziyixi. My website is \url{https://ziyixi.github.io/} which may
+still be in development. 
+
+
+\end{document}

@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{n}{Using} \PYG{n}{QMLReactive}
+\PYG{n}{win} \PYG{o}{=} \PYG{n}{Window}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{T}\PYG{l+s}{e}\PYG{l+s}{s}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{n}\PYG{l+s}{g}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)} \PYG{err}{|}\PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{bx} \PYG{o}{=} \PYG{k+kt}{Box}\PYG{p}{(}\PYG{o}{:}\PYG{n}{v}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}  \PYG{c}{\PYGZsh{} a window containing a vertical Box for layout}
+\PYG{n}{reactive\PYGZus{}signal}\PYG{o}{=}\PYG{n}{signal}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{sl} \PYG{o}{=} \PYG{n}{slider}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{:}\PYG{l+m+mi}{100}\PYG{p}{,}\PYG{n}{signal}\PYG{o}{=}\PYG{n}{reactive\PYGZus{}value}\PYG{p}{)}
+\PYG{n}{tb} \PYG{o}{=} \PYG{n}{textbox}\PYG{p}{(}\PYG{k+kt}{Int}\PYG{p}{;} \PYG{n}{signal}\PYG{o}{=}\PYG{n}{reactive\PYGZus{}value}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{push!}\PYG{p}{(}\PYG{n}{bx}\PYG{p}{,} \PYG{n}{sl}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{push!}\PYG{p}{(}\PYG{n}{bx}\PYG{p}{,} \PYG{n}{tb}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{showall}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}

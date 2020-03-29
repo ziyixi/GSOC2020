@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+    \PYG{k+kr}{import} \PYG{n+nx}{QtQuick} \PYG{l+m+mf}{2.0}
+    \PYG{k+kr}{import} \PYG{n+nx}{QtQuick}\PYG{p}{.}\PYG{n+nx}{Controls} \PYG{l+m+mf}{1.0}
+    \PYG{k+kr}{import} \PYG{n+nx}{QtQuick}\PYG{p}{.}\PYG{n+nx}{Layouts} \PYG{l+m+mf}{1.0}
+
+    \PYG{n+nx}{ApplicationWindow} \PYG{p}{\PYGZob{}}
+      \PYG{k+kd}{id: root}
+
+      \PYG{n+nx}{ColumnLayout} \PYG{p}{\PYGZob{}}
+        \PYG{n+nx}{Slider} \PYG{p}{\PYGZob{}}
+          \PYG{k}{value:} \PYG{n+nx}{input}
+          \PYG{k}{onValueChanged:} \PYG{p}{\PYGZob{}}
+            \PYG{n+nx}{input} \PYG{o}{=} \PYG{n+nx}{value}\PYG{p}{;}
+            \PYG{n+nx}{output} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n+nx}{input}\PYG{p}{;}
+          \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n+nx}{TextInput} \PYG{p}{\PYGZob{}}
+          \PYG{k}{text:} \PYG{n+nx}{output}
+          \PYG{k}{onTextEdited:} \PYG{p}{\PYGZob{}}
+            \PYG{n+nx}{output} \PYG{o}{=} \PYG{n+nx}{text}\PYG{p}{;}
+            \PYG{n+nx}{input} \PYG{o}{=} \PYG{n+nb}{parseInt}\PYG{p}{(}\PYG{n+nx}{text}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+          \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+
+    \PYG{p}{\PYGZcb{}}
+\end{Verbatim}
