@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+    \PYG{c}{\PYGZsh{} assume we have already calculated the mean gradients for each GPU, gradients\PYGZus{}this\PYGZus{}gpu}
+    \PYG{n}{mean\PYGZus{}gradients}\PYG{o}{=}\PYG{n}{collect\PYGZus{}gradients}\PYG{p}{(}\PYG{n}{gradients\PYGZus{}each\PYGZus{}gpu}\PYG{p}{,}\PYG{o}{:}\PYG{n}{mean}\PYG{p}{,}\PYG{n}{root}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{)}
+\end{Verbatim}
